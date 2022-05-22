@@ -5,14 +5,17 @@ from jira import JIRA
 class MesaJira:
 
     def __init__(self, access_file):
+        self.jira = None
         access = open(access_file, mode='r', encoding='utf-8')
-        # with open(access_file, "r") as access:
-        #     url = access.readlines()[0]
-        # self.connection = None
-        self.url = access.readline().replace("\n", "")
+        self.server = access.readline().replace("\n", "")
         self.user = access.readline().replace("\n", "")
-        self.psd = access.readline().replace("\n", "")
+        self.token = access.readline().replace("\n", "")
         access.close()
 
     def get_jira_connection(self):
-        print("URL:{}\nUser:{}\nPass:{}".format(self.url, self.user, self.psd))
+        self.jira = JIRA(
+            server=self.server,
+            basic_auth=(self.user, self.token),
+
+        )
+        return self.jira
