@@ -5,6 +5,8 @@ class MProject(models.Model):
     name = models.CharField(max_length=100)
     url = models.CharField(max_length=200)
     status = models.BooleanField(default=True)
+    def __str__(self):
+        return self.name + " - " + ("Ativo" if self.status else "Inativo")
 
 
 class MDev(models.Model):

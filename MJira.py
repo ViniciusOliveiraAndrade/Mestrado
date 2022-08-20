@@ -15,7 +15,6 @@ class MesaJira:
     def get_jira_connection(self):
         self.jira = JIRA(
             server=self.server,
-            basic_auth=(self.user, self.token),
-
+            # basic_auth=(self.user, self.token),
         )
         return self.jira

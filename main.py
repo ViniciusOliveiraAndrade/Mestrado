@@ -1,11 +1,15 @@
 from MJira import MesaJira
+import django
 
 
 def check_check(name):
     jira = MesaJira("acesso.txt")
-    print(jira.get_jira_connection().issue("").summary)
+    issue = jira.get_jira_connection().issue("JRASERVER-9")
+
+    print(issue.fields.summary)
 
 
 if __name__ == '__main__':
+    print(django.get_version())
     check_check('PyCharm')
 

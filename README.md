@@ -15,7 +15,6 @@
 ### Installation 
 * Install Python version 3.8 or more
   * https://www.python.org/downloads/
-* Install Jira Library for python
-  * "pip install jira" 
-* Install Django framework
-  * "pip install django"
+* Install Libraries for python
+
+      pip install -r requeriments.txt
