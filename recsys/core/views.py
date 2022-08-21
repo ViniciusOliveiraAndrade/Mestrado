@@ -7,8 +7,8 @@ from .models import *
 
 def projetos(request):
     projects = MProject.objects.all()
-    output = ', '.join([p.__str__() for p in projects])
-    return render(request, 'core/layout/base.html')
+    args = {'projects': projects}
+    return render(request, 'core/projects.html', args)
 
 
 def projeto_detail(request, projeto_id):
@@ -20,7 +20,9 @@ def projeto_cadastro(request):
 
 
 def desenvolvedores(request):
-    return HttpResponse("Tela do desenvolvedores")
+    desenvolvedores = MDev.objects.all()
+    args = {"desenvolvedores":desenvolvedores}
+    return render(request, 'core/desenvolvedores.html', args)
 
 
 def desenvolverdor_detalhe(request, desenvolvedor_id):
