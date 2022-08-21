@@ -1,10 +1,12 @@
 from django.db import models
 
+
 # Create your models here.
 class MProject(models.Model):
     name = models.CharField(max_length=100)
     url = models.CharField(max_length=200)
     status = models.BooleanField(default=True)
+
     def __str__(self):
         return self.name + " - " + ("Ativo" if self.status else "Inativo")
 
@@ -21,6 +23,7 @@ class JiraIssues(models.Model):
     description = models.TextField(blank=False)
     feature = models.CharField(max_length=100)
     title = models.CharField(max_length=250)
+
 
 class Recommendation(models.Model):
     issue = models.ForeignKey(JiraIssues, on_delete=models.CASCADE)
