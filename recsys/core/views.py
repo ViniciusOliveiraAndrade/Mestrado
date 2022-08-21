@@ -8,7 +8,7 @@ from .models import *
 def projetos(request):
     projects = MProject.objects.all()
     output = ', '.join([p.__str__() for p in projects])
-    return HttpResponse("Tela de projetos %s" % output)
+    return render(request, 'core/layout/base.html')
 
 
 def projeto_detail(request, projeto_id):
