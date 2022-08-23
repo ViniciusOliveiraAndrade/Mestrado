@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 
@@ -16,7 +16,19 @@ def projeto_detail(request, projeto_id):
 
 
 def projeto_cadastro(request):
-    return HttpResponse("Tela de cadastrar projeto")
+    if request.method == 'POST':
+        try:
+            nome = request.POST['nome']
+            url = request.POST['url']
+            status = True if request.POST['status'] == "on" else False
+            projeto = MProject(name=nome, url=url, status=status)
+            projeto.save()
+            # args = {"projeto_id": projeto.id}
+            return redirect('core:project_detail', projeto_id= projeto.id)
+        except (KeyError):
+            return render(request, 'core/cadastrar_projeto.html')
+    else:
+        return render(request, 'core/cadastrar_projeto.html')
 
 
 def desenvolvedores(request):
