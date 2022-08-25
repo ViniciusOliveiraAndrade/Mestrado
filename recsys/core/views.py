@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 
@@ -42,7 +42,27 @@ def desenvolverdor_detalhe(request, desenvolvedor_id):
 
 
 def desenvolverdor_cadastro(request):
-    return HttpResponse("Tela do cadastro de desenvolvedores")
+
+    if request.method == "POST":
+        try:
+            projeto = get_object_or_404(MProject, pk=request.POST['projeto'])
+            nome = request.POST['nome']
+            email = request.POST['email']
+            id_jira = request.POST['id_jira']
+            experiencias = request.POST['experiencias']
+
+            desenvolvedor = MDev(name=nome, email=email, project=projeto)
+            desenvolvedor.save()
+
+            return redirect('core:dev_detail', desenvolvedor_id=desenvolvedor.id)
+        except (KeyError):
+            projetos = MProject.objects.all()
+            args = {"projetos": projetos}
+            return render(request, "core/cadastrar_desenvolvedores.html", args)
+    else:
+        projetos = MProject.objects.all()
+        args = {"projetos":projetos}
+        return render(request, "core/cadastrar_desenvolvedores.html", args)
 
 
 def recomendacao(request, projeto_id):
