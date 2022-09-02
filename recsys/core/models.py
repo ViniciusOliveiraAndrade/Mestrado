@@ -15,6 +15,9 @@ class MDev(models.Model):
     project = models.ForeignKey(MProject, on_delete=models.PROTECT)
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=150)
+    id_jira = models.CharField(max_length=50, default="ID não definido")
+    def __str__(self):
+        return self.name + " - " + self.project.name
 
 
 class JiraIssues(models.Model):
@@ -28,3 +31,18 @@ class JiraIssues(models.Model):
 class Recommendation(models.Model):
     issue = models.ForeignKey(JiraIssues, on_delete=models.CASCADE)
     dev = models.ForeignKey(MDev, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.issue.key + " - " + self.dev.name
+
+class Experiencia(models.Model):
+    exp = models.CharField(max_length=100)
+    dev = models.ManyToManyField(MDev)
+    def __str__(self):
+        return self.exp
+
+class Linguagem(models.Model):
+    nome = models.CharField(max_length=100)
+    dev = models.ManyToManyField(MDev)
+    projeto = models.ManyToManyField(MProject)
+    def __str__(self):
+        return self.nome

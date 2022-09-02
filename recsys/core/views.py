@@ -38,7 +38,9 @@ def desenvolvedores(request):
 
 
 def desenvolverdor_detalhe(request, desenvolvedor_id):
-    return HttpResponse("Tela do desenvolveor %s" % desenvolvedor_id)
+    dev = get_object_or_404(MDev,pk=desenvolvedor_id)
+    args= {"dev": dev}
+    return render(request, "core/detalhe_desenvolvedor.html", args)
 
 
 def desenvolverdor_cadastro(request):
@@ -50,9 +52,18 @@ def desenvolverdor_cadastro(request):
             email = request.POST['email']
             id_jira = request.POST['id_jira']
             experiencias = request.POST['experiencias']
-
-            desenvolvedor = MDev(name=nome, email=email, project=projeto)
+            desenvolvedor = MDev(name=nome, email=email, project=projeto, id_jira=id_jira)
             desenvolvedor.save()
+
+            experiencias = experiencias.lower()
+            experiencias = experiencias.split(",")
+            exps = []
+
+            for exp in experiencias:
+                exps.append(exp.strip())
+            for exp in exps:
+                Ex, created = Experiencia.objects.get_or_create(exp=exp)
+                Ex.dev.add(desenvolvedor)
 
             return redirect('core:dev_detail', desenvolvedor_id=desenvolvedor.id)
         except (KeyError):
