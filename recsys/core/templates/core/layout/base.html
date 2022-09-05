@@ -19,7 +19,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="{% url 'core:home' %}">RecSys</a>
+            <a class="navbar-brand ps-3" href="{% url 'core:projetos' %}">RecSys</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -49,11 +49,11 @@
                         <div class="nav">
 
                             <div class="sb-sidenav-menu-heading">Projetos</div>
-                            <a class="nav-link" href="{% url 'core:home' %}">
+                            <a class="nav-link" href="{% url 'core:projetos' %}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                                 Listar
                             </a>
-                            <a class="nav-link" href="{% url 'core:project_registration' %}">
+                            <a class="nav-link" href="{% url 'core:cadastro_projeto' %}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-folder-plus"></i></div>
                                 Cadastrar
                             </a>
@@ -63,7 +63,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                                 Listar
                             </a>
-                            <a class="nav-link" href="{% url 'core:dev_registration' %}">
+                            <a class="nav-link" href="{% url 'core:cadastro_dev' %}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
                                 Cadastrar
                             </a>

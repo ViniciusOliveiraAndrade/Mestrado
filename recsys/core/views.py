@@ -8,14 +8,16 @@ from .models import *
 def projetos(request):
     projects = MProject.objects.all()
     args = {'projects': projects}
-    return render(request, 'core/projects.html', args)
+    return render(request, 'core/listar_projetos.html', args)
 
 
-def projeto_detail(request, projeto_id):
-    return HttpResponse("Tela do projeto %s" % projeto_id)
+def detalhar_projeto(request, projeto_id):
+    projeto = get_object_or_404(MProject, pk=projeto_id)
+    args = {"projeto": projeto}
+    return render(request, "core/detalhe_projeto.html", args)
 
 
-def projeto_cadastro(request):
+def cadastrar_projeto(request):
     if request.method == 'POST':
         try:
             nome = request.POST['nome']
@@ -24,7 +26,7 @@ def projeto_cadastro(request):
             projeto = MProject(name=nome, url=url, status=status)
             projeto.save()
             # args = {"projeto_id": projeto.id}
-            return redirect('core:project_detail', projeto_id= projeto.id)
+            return redirect('core:detalhe_projeto', projeto_id=projeto.id)
         except (KeyError):
             return render(request, 'core/cadastrar_projeto.html')
     else:
@@ -33,18 +35,17 @@ def projeto_cadastro(request):
 
 def desenvolvedores(request):
     desenvolvedores = MDev.objects.all()
-    args = {"desenvolvedores":desenvolvedores}
-    return render(request, 'core/desenvolvedores.html', args)
+    args = {"desenvolvedores": desenvolvedores}
+    return render(request, 'core/listar_desenvolvedores.html', args)
 
 
-def desenvolverdor_detalhe(request, desenvolvedor_id):
-    dev = get_object_or_404(MDev,pk=desenvolvedor_id)
-    args= {"dev": dev}
+def detalhar_desenvolverdor(request, desenvolvedor_id):
+    dev = get_object_or_404(MDev, pk=desenvolvedor_id)
+    args = {"dev": dev}
     return render(request, "core/detalhe_desenvolvedor.html", args)
 
 
-def desenvolverdor_cadastro(request):
-
+def cadastrar_desenvolverdor(request):
     if request.method == "POST":
         try:
             projeto = get_object_or_404(MProject, pk=request.POST['projeto'])
@@ -65,16 +66,25 @@ def desenvolverdor_cadastro(request):
                 Ex, created = Experiencia.objects.get_or_create(exp=exp)
                 Ex.dev.add(desenvolvedor)
 
-            return redirect('core:dev_detail', desenvolvedor_id=desenvolvedor.id)
+            return redirect('core:detalhe_dev', desenvolvedor_id=desenvolvedor.id)
         except (KeyError):
             projetos = MProject.objects.all()
             args = {"projetos": projetos}
-            return render(request, "core/cadastrar_desenvolvedores.html", args)
+            return render(request, "core/cadastrar_desenvolvedor.html", args)
     else:
         projetos = MProject.objects.all()
-        args = {"projetos":projetos}
-        return render(request, "core/cadastrar_desenvolvedores.html", args)
+        args = {"projetos": projetos}
+        return render(request, "core/cadastrar_desenvolvedor.html", args)
 
 
 def recomendacao(request, projeto_id):
     return HttpResponse("Tela da recomendação do projeto %s" % projeto_id)
+
+def detalhar_squad(request, projeto_id, squad_id):
+    return HttpResponse("Tela do squad do projeto %s" % squad_id)
+
+def cadastrar_squad(request, projeto_id):
+    return HttpResponse("Tela de cadastro da squad para o projeto %s" % projeto_id)
+
+def editar_squad(request, projeto_id, squad_id):
+    return HttpResponse("Tela de editar o squad {} do projeto {}".format(squad_id, projeto_id))

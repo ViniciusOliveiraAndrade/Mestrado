@@ -1,0 +1,74 @@
+{% extends 'core/layout/base.html'%}
+
+{% block main %}
+<h1 class="mt-4">Detalhe do projeto</h1>
+<!--<ol class="breadcrumb mb-4">-->
+<!--    <li class="breadcrumb-item active">Todos os projetos</li>-->
+<!--    <li class="breadcrumb-item active">Cadastrar novo projeto</li>-->
+<!--</ol>-->
+
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <form action="{% url 'core:cadastro_projeto' %}" method="post" >
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <div class="form-floating mb-3 mb-md-0">
+                                <input class="form-control"name="nome"  id="nome" type="text" placeholder="Insira o nome do projeto" required disabled value="{{projeto.name}}"/>
+                                <label for="nome">Nome do projeto</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" name="status" id="status" {% if projeto.status %} checked {% endif %} disabled>
+                                    <label class="form-check-label" for="status">{% if projeto.status %}Projeto ativo{% else %}Projeto inativo{% endif %}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--                <div class="row">-->
+                    <!--                    <div class="col-md-12">-->
+                    <!--                        <div class="form-floating mb-3">-->
+                    <!--                            <input class="form-control" name="url" id="url" type="text" placeholder="Insira a url do projeto no jira" required disabled value="{{projeto.url}}" />-->
+                    <!--                            <label for="url">URL do projeto</label>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                </div>-->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="d-flex align-items-center justify-content-between">
+                    <i class="fas fa-table me-1"></i>Squads
+                    <a class="btn btn-primary ml-4" href="{% url 'core:editar_squad' projeto.id 1 %}">Editar Squads</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">home</div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">profile</div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">contacts</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
