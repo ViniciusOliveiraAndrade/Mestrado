@@ -14,7 +14,10 @@ class MProject(models.Model):
 class Squad(models.Model):
     nome = models.CharField(max_length=100)
     sprint = models.CharField(max_length=3)
-    nome = models.ForeignKey(MProject, on_delete=models.CASCADE)
+    projeto = models.ForeignKey(MProject, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nome + " - " + self.projeto.name
 
 
 class MDev(models.Model):
@@ -59,7 +62,6 @@ class Linguagem(models.Model):
 
     def __str__(self):
         return self.nome
-
 
 # class Squad(models.Model):
 #     nome = models.CharField(max_length=100)

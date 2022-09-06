@@ -11,8 +11,8 @@
     <div class="col-xl-6">
         <div class="card mb-4">
             <div class="card-body">
-                <form action="{% url 'core:cadastro_projeto' %}" method="post" >
-                    {% csrf_token %}
+<!--                <form action="{% url 'core:cadastro_projeto' %}" method="post" >-->
+<!--                    {% csrf_token %}-->
                     <div class="row mb-3">
                         <div class="col-md-8">
                             <div class="form-floating mb-3 mb-md-0">
@@ -38,7 +38,7 @@
                     <!--                        </div>-->
                     <!--                    </div>-->
                     <!--                </div>-->
-                </form>
+<!--                </form>-->
             </div>
         </div>
     </div>
@@ -50,25 +50,56 @@
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
                     <i class="fas fa-table me-1"></i>Squads
-                    <a class="btn btn-primary ml-4" href="{% url 'core:editar_squad' projeto.id 1 %}">Editar Squads</a>
+<!--                    <a class="btn btn-primary ml-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Editar Squads</a>-->
+                    <a class="btn btn-primary ml-4" href="{% url 'core:squads' projeto.id %}">Gerenciar Squads</a>
                 </div>
             </div>
             <div class="card-body">
+                {% if projeto.squad_set %}
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
-                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
-                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+                        {% for squad in projeto.squad_set.all %}
+                        <button class="nav-link{% if forloop.first %} active{% endif %}" id="nav-{{squad.nome}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{squad.nome}}" type="button" role="tab" aria-controls="nav-{{squad.nome}}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{squad.nome}}</button>
+                        {% endfor %}
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">home</div>
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">profile</div>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">contacts</div>
+                    {% for squad in projeto.squad_set.all %}
+                    <div class="tab-pane fade{% if forloop.first %} show active{% endif %}" id="nav-{{squad.nome}}" role="tabpanel" aria-labelledby="nav-{{squad.nome}}-tab">{{squad.nome}}</div>
+                    {% endfor %}
                 </div>
+                {% endif %}
+
             </div>
         </div>
     </div>
 </div>
+
+
+<!-- Button trigger modal -->
+<!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">-->
+<!--  Launch static backdrop modal-->
+<!--</button>-->
+
+<!-- Modal -->
+<!--<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+<!--  <div class="modal-dialog">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>-->
+<!--        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        ...-->
+
+
+<!--      </div>-->
+<!--      <div class="modal-footer">-->
+<!--        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--        <button type="button" class="btn btn-primary">Save</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 {% endblock %}
