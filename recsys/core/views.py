@@ -80,16 +80,19 @@ def cadastrar_desenvolverdor(request):
 def recomendacao(request, projeto_id):
     return HttpResponse("Tela da recomendação do projeto %s" % projeto_id)
 
+
 def listar_squad(request, projeto_id):
-    projeto = get_object_or_404(MProject,pk=projeto_id)
-    args = {"projeto":projeto}
+    projeto = get_object_or_404(MProject, pk=projeto_id)
+    args = {"projeto": projeto}
     return render(request, "core/listar_squads.html", args)
+
 
 def detalhar_squad(request, projeto_id, squad_id):
     squad = get_object_or_404(Squad, pk=squad_id)
     args = {"squad": squad}
 
     return render(request, "core/detalhe_squad.html", args)
+
 
 def cadastrar_squad(request, projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
@@ -108,6 +111,7 @@ def cadastrar_squad(request, projeto_id):
     else:
         return render(request, "core/cadastrar_squad.html", args)
 
+
 def editar_squad(request, projeto_id, squad_id):
     squad = get_object_or_404(Squad, pk=squad_id)
     args = {"squad": squad}
@@ -123,3 +127,13 @@ def editar_squad(request, projeto_id, squad_id):
             return render(request, "core/editar_squad.html", args)
     else:
         return render(request, "core/editar_squad.html", args)
+
+
+def deletar_squad(request, projeto_id, squad_id):
+    try:
+        squad = get_object_or_404(Squad, pk=squad_id)
+        squad.delete()
+        return redirect('core:squads', projeto_id=projeto_id)
+    except (KeyError):
+
+        return redirect('core:squads', projeto_id=projeto_id)

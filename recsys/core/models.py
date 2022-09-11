@@ -62,6 +62,9 @@ class Linguagem(models.Model):
 
     def __str__(self):
         return self.nome
+class User_jira (models.Model):
+    login = models.CharField(max_length=150)
+    token = models.CharField(max_length=150)
 
 # class Squad(models.Model):
 #     nome = models.CharField(max_length=100)

@@ -1,4 +1,4 @@
-from MJira import MesaJira
+from recsys.core.MJira import MesaJira
 import django
 
 
