@@ -19,4 +19,7 @@ urlpatterns = [
     path('projeto/<int:projeto_id>/squad/<int:squad_id>/editar', views.editar_squad, name="editar_squad"),
     path('projeto/<int:projeto_id>/squad/<int:squad_id>/deletar', views.deletar_squad, name="deletar_squad"),
 
+    path('projeto/<int:projeto_id>/alocacao/', views.listar_alocacao, name="listar_alocacao"),
+    path('projeto/<int:projeto_id>/alocacao/alocar', views.alocar_dev, name="alocar_dev"),
+
 ]

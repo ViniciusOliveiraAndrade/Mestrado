@@ -2,14 +2,31 @@ from django.db import models
 
 
 # Create your models here.
+class Linguagem(models.Model):
+    nome = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nome
+
+
 class MProject(models.Model):
     name = models.CharField(max_length=100)
     url = models.CharField(max_length=200)
     status = models.BooleanField(default=True)
+    liguagens = models.ManyToManyField(Linguagem, default=None, blank=True, null=True)
 
     def __str__(self):
         return self.name + " - " + ("Ativo" if self.status else "Inativo")
 
+
+class MDev(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.CharField(max_length=150)
+    id_jira = models.CharField(max_length=50, default="ID não definido")
+    liguagens = models.ManyToManyField(Linguagem, default=None, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
 class Squad(models.Model):
     nome = models.CharField(max_length=100)
@@ -20,15 +37,22 @@ class Squad(models.Model):
         return self.nome + " - " + self.projeto.name
 
 
-class MDev(models.Model):
-    project = models.ForeignKey(MProject, on_delete=models.PROTECT)
-    name = models.CharField(max_length=200)
-    email = models.CharField(max_length=150)
-    id_jira = models.CharField(max_length=50, default="ID não definido")
-    squad = models.ForeignKey(Squad, on_delete=models.SET_NULL, blank=True, null=True, )
+class AlocacaoP(models.Model):
+    projeto = models.ForeignKey(MProject, on_delete=models.CASCADE)
+    dev = models.ForeignKey(MDev, on_delete=models.CASCADE)
+    squad = models.ForeignKey(Squad, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
-        return self.name + " - " + self.project.name
+        return self.projeto.name + " - " + self.dev.name
+
+#
+# class AlocacaoS(models.Model):
+#     Squad = models.ForeignKey(Squad, on_delete=models.CASCADE)
+#     # dev = models.ForeignKey(MDev, on_delete=models.SET_NULL, blank=True, null=True)
+#     dev = models.ForeignKey(MDev, on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return self.Squad.nome + " - " + self.dev.name
 
 
 class JiraIssues(models.Model):
@@ -55,21 +79,6 @@ class Experiencia(models.Model):
         return self.exp
 
 
-class Linguagem(models.Model):
-    nome = models.CharField(max_length=100)
-    dev = models.ManyToManyField(MDev)
-    projeto = models.ManyToManyField(MProject)
-
-    def __str__(self):
-        return self.nome
-class User_jira (models.Model):
+class User_jira(models.Model):
     login = models.CharField(max_length=150)
     token = models.CharField(max_length=150)
-
-# class Squad(models.Model):
-#     nome = models.CharField(max_length=100)
-#     sprint = models.CharField(max_length=3)
-#     nome = models.ForeignKey(MProject, on_delete=models.CASCADE)
-
-# class Alocacao(models.Model):
-#     dev =

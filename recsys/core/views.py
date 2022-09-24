@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, JsonResponse
 from .models import *
 
@@ -13,7 +13,12 @@ def projetos(request):
 
 def detalhar_projeto(request, projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
-    args = {"projeto": projeto}
+    try:
+        alocacao = get_list_or_404(AlocacaoP, projeto=projeto)
+        args = {"projeto": projeto, "alocacao": alocacao}
+    except Exception:
+        args = {"projeto": projeto}
+
     return render(request, "core/detalhe_projeto.html", args)
 
 
@@ -137,3 +142,15 @@ def deletar_squad(request, projeto_id, squad_id):
     except (KeyError):
 
         return redirect('core:squads', projeto_id=projeto_id)
+
+
+def listar_alocacao(request, projeto_id):
+    projeto = get_object_or_404(MProject, pk=projeto_id)
+    args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all()}
+    return render(request, "core/listar_alocacao.html", args)
+
+def alocar_dev(request,projeto_id):
+    projeto = get_object_or_404(MProject, pk=projeto_id)
+    args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all()}
+
+    return render(request, "core/tela_alocar_dev.html", args)

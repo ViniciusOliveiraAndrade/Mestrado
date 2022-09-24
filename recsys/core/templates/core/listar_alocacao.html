@@ -1,9 +1,9 @@
 {% extends 'core/layout/base.html'%}
 
 {% block main %}
-<h1 class="mt-4">Squads do projeto {{projeto.name}}</h1>
+<h1 class="mt-4">Alocação do projeto {{projeto.name}}</h1>
 <ol class="breadcrumb mb-4">
-<!--    <li class="breadcrumb-item active"> Squads do projeto {{projeto.name}}</li>-->
+<!--    <li class="breadcrumb-item active"> Squads do projeto {{projeto.nome}}</li>-->
 <!--    <li class="breadcrumb-item active">Cadastrar novo projeto</li>-->
 </ol>
 
@@ -12,7 +12,7 @@
         <div class="d-flex align-items-center justify-content-between">
             <i class="fas fa-table me-1"></i>
             <a class="btn btn-primary ml-4 float-righ" onclick="window.location = ('{% url 'core:detalhe_projeto' projeto.id %}');">Voltar para o projeto</a>
-            <a class="btn btn-primary ml-4" href="{% url 'core:cadastro_squad' projeto.id %}">Cadastrar nova Squad</a>
+            <a class="btn btn-primary ml-4" href="{% url 'core:alocar_dev' projeto.id %}">Alocar desenvolvedor</a>
         </div>
     </div>
     <div class="card-body">
@@ -33,14 +33,14 @@
             </tfoot>
             <tbody>
                 {% if projeto %}
-                {% for squad in projeto.squad_set.all %}
+                {% for alocado in projeto.alocacao_set.all %}
                 <tr>
-                    <td>{{squad.nome}}</td>
-                    <td>{{squad.sprint}}</td>
+                    <td>{{alocado.dev.nome}}</td>
+                    <td>{{alocado.squad.nome}}</td>
                     <td>
-                        <a href="{% url 'core:detalhe_squad' projeto.id squad.id %}" ><i class="fas fa-eye me-1"></i></a>
-                        <a href="{% url 'core:editar_squad' projeto.id squad.id %}" ><i class="fas fa-pen me-1"></i></a>
-                        <a href="{% url 'core:deletar_squad' projeto.id squad.id %}" ><i class="fas fa-trash me-1"></i></a>
+                        <a href="{% url 'core:detalhe_squad' projeto.id alocado.squad.id %}" ><i class="fas fa-eye me-1"></i></a>
+                        <a href="{% url 'core:editar_squad' projeto.id alocado.squad.id %}" ><i class="fas fa-pen me-1"></i></a>
+                        <a href="{% url 'core:deletar_squad' projeto.id alocado.squad.id %}" ><i class="fas fa-trash me-1"></i></a>
 
                     </td>
                 </tr>
