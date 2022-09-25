@@ -22,5 +22,6 @@ urlpatterns = [
     path('projeto/<int:projeto_id>/alocacao/', views.listar_alodos, name="listar_alocacao"),
     path('projeto/<int:projeto_id>/alocacao/alocar', views.alocar_dev, name="alocar_dev"),
     path('projeto/<int:projeto_id>/alocacao/<int:dev_id>/alocar_squad', views.alocar_dev_squad, name="alocar_dev_squad"),
+    path('projeto/<int:projeto_id>/alocacao/remover_alocacao/<int:alocacao_id>/', views.remover_alocar_dev, name="remover_alocar_dev"),
 
 ]

@@ -151,8 +151,11 @@ def listar_alodos(request, projeto_id):
 
 def alocar_dev(request,projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
-    devs_mesa = MDev.objects.all()
+    devs_mesa = MDev.objects.all().filter(alocacaop__isnull=True)
     args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all(), "devs_mesa": devs_mesa}
+
+
+
 
     if request.method == "POST":
         try:
@@ -195,3 +198,9 @@ def alocar_dev_squad(request,projeto_id,dev_id):
             return render(request, "core/alocar_dev_squad.html", args)
     else:
         return render(request, "core/alocar_dev_squad.html", args)
+
+
+def remover_alocar_dev(request, projeto_id, alocacao_id):
+    alocao = get_object_or_404(AlocacaoP, pk=alocacao_id)
+    alocao.delete()
+    return redirect('core:listar_alocacao', projeto_id=projeto_id)
