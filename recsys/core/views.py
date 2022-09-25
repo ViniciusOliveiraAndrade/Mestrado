@@ -144,13 +144,54 @@ def deletar_squad(request, projeto_id, squad_id):
         return redirect('core:squads', projeto_id=projeto_id)
 
 
-def listar_alocacao(request, projeto_id):
+def listar_alodos(request, projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
-    args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all()}
+    args = {"projeto": projeto, "alocados": projeto.alocacaop_set.all()}
     return render(request, "core/listar_alocacao.html", args)
 
 def alocar_dev(request,projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
-    args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all()}
+    devs_mesa = MDev.objects.all()
+    args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all(), "devs_mesa": devs_mesa}
 
-    return render(request, "core/tela_alocar_dev.html", args)
+    if request.method == "POST":
+        try:
+            devs_mesa = request.POST.getlist('devs_mesa')
+            devs_recomendados = request.POST.getlist('devs_recomendados')
+
+            for dev_selecionado in devs_mesa:
+                dev = get_object_or_404(MDev, pk=dev_selecionado)
+                alocar = AlocacaoP(projeto=projeto, dev=dev, squad=None)
+                alocar.save()
+
+            for dev_selecionado in devs_recomendados:
+                dev = get_object_or_404(MDev, pk=dev_selecionado)
+                alocar = AlocacaoP(projeto=projeto, dev=dev, squad=None)
+                alocar.save()
+
+            return redirect('core:listar_alocacao', projeto_id=projeto.id)
+
+        except (KeyError):
+            return render(request, "core/alocar_dev.html", args)
+    else:
+        return render(request, "core/alocar_dev.html", args)
+
+def alocar_dev_squad(request,projeto_id,dev_id):
+    projeto = get_object_or_404(MProject, pk=projeto_id)
+    dev = get_object_or_404(MDev,pk=dev_id)
+    args = {"projeto": projeto, "dev": dev}
+
+    if request.method == "POST":
+        try:
+            alocacao = get_object_or_404(AlocacaoP, projeto_id=projeto_id, dev_id=dev_id)
+            squad = get_object_or_404(Squad, pk=request.POST['squad'])
+
+            alocacao.squad = squad
+            alocacao.save()
+
+            return redirect('core:listar_alocacao', projeto_id=projeto.id)
+
+        except (KeyError):
+            return render(request, "core/alocar_dev_squad.html", args)
+    else:
+        return render(request, "core/alocar_dev_squad.html", args)

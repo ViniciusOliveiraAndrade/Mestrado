@@ -1,0 +1,54 @@
+{% extends 'core/layout/base.html'%}
+
+{% block main %}
+<h1 class="mt-4">Cadastrar desenvolvedor</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form action="{% url 'core:alocar_dev_squad' projeto.id dev.id%}" method="post">
+            {% csrf_token %}
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+                    <div class="form-floating mb-3 mb-md-0">
+                        <input class="form-control" id="nome" type="text" disabled value="{{dev.name}}"/>
+                        <label for="nome">Nome</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3 mb-md-0">
+                        <input class="form-control" id="inputEmail" type="email" disabled value="{{dev.email}}"/>
+                        <label for="inputEmail">E-mail</label>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+
+                    <select name="squad" class="form-select" aria-label="Default select example" required>
+                        <option selected>Selecione uma Squad</option>
+                        {% for squad in projeto.squad_set.all %}
+                        <option value="{{squad.id}}">{{squad.nome}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="mt-4 mb-0">
+                <div class="d-grid">
+                    <input class="btn btn-primary btn-block" type="submit" value="Alocar">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

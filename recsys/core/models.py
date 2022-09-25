@@ -13,7 +13,7 @@ class MProject(models.Model):
     name = models.CharField(max_length=100)
     url = models.CharField(max_length=200)
     status = models.BooleanField(default=True)
-    liguagens = models.ManyToManyField(Linguagem, default=None, blank=True, null=True)
+    linguagens = models.ManyToManyField(Linguagem, default=None, blank=True)
 
     def __str__(self):
         return self.name + " - " + ("Ativo" if self.status else "Inativo")
@@ -23,7 +23,7 @@ class MDev(models.Model):
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=150)
     id_jira = models.CharField(max_length=50, default="ID não definido")
-    liguagens = models.ManyToManyField(Linguagem, default=None, blank=True, null=True)
+    linguagens = models.ManyToManyField(Linguagem, default=None, blank=True)
 
     def __str__(self):
         return self.name

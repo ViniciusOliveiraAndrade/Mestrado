@@ -1,0 +1,66 @@
+{% extends 'core/layout/base.html'%}
+
+{% block main %}
+<h1 class="mt-4">Alocação de desenvolvedores</h1>
+<ol class="breadcrumb mb-4">
+    <!--    <li class="breadcrumb-item active"> Squads do projeto {{projeto.nome}}</li>-->
+    <!--    <li class="breadcrumb-item active">Cadastrar novo projeto</li>-->
+</ol>
+
+
+<form class="row" ction="{% url 'core:alocar_dev' projeto.id %}" method="post">
+
+    <!--
+        Area de alocação dos desenvolvedores
+    -->
+<!--    <form action="{% url 'core:cadastro_projeto' %}" method="post" class="col-12">-->
+    {% csrf_token %}
+    <div class="card-header mb-6">
+        <div class="d-flex align-items-center justify-content-between">
+            <i class="fas fa-table me-1"></i>Alocação
+            <a class="btn btn-primary ml-4 float-right" onclick="window.location = ('{% url 'core:detalhe_projeto' projeto.id %}');">Voltar para o projeto</a>
+        </div>
+    </div>
+
+
+    <div class="card col-6 mt-4">
+        <div class="card-header">
+            <div class="d-flex align-items-center justify-content-between">
+                Devs recomendado
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <select class="form-select" multiple aria-label="multiple select example" name="devs_recomendados">
+                {% for dev in devs_recomendados %}
+                <option value="{{ dev.id }}">{{ dev.name }}{% if dev.linguagens.first %} - {{dev.linguagens.first}} {% endif %} </option>
+                {% endfor %}
+            </select>
+
+        </div>
+    </div>
+
+    <div class="card col-6 mt-4">
+        <div class="card-header">
+            Devs da mesa
+        </div>
+
+        <div class="card-body">
+
+            <select class="form-select" multiple aria-label="multiple select example" name="devs_mesa">
+                {% for dev in devs_mesa %}
+                <option value="{{ dev.id }}">{{ dev.name }}{% if dev.linguagens.first %} - {{dev.linguagens.first}} {% endif %} </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="card-footer d-flex align-items-center justify-content-between">
+        <i> </i>
+        <i> </i>
+        <input class="btn btn-primary ml-4 float-right" type="submit" value="Alocar"/>
+    </div>
+
+</form>
+
+{% endblock %}
