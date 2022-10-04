@@ -30,12 +30,25 @@ def cadastrar_projeto(request):
             status = True if request.POST['status'] == "on" else False
             projeto = MProject(name=nome, url=url, status=status)
             projeto.save()
-            # args = {"projeto_id": projeto.id}
+
+            # Vincula as liguagens
+            linguagens = request.POST.getlist("linguagens")
+
+            for ling in linguagens:
+                linguagem = get_object_or_404(Linguagem, pk=ling)
+                projeto.linguagens.add(linguagem)
+
+            projeto.save()
+
             return redirect('core:detalhe_projeto', projeto_id=projeto.id)
         except (KeyError):
-            return render(request, 'core/cadastrar_projeto.html')
+            linguagens = Linguagem.objects.all()
+            args = {"linguagens": linguagens}
+            return render(request, 'core/cadastrar_projeto.html', args)
     else:
-        return render(request, 'core/cadastrar_projeto.html')
+        linguagens = Linguagem.objects.all()
+        args = {"linguagens": linguagens}
+        return render(request, 'core/cadastrar_projeto.html', args)
 
 
 def desenvolvedores(request):
@@ -53,14 +66,24 @@ def detalhar_desenvolverdor(request, desenvolvedor_id):
 def cadastrar_desenvolverdor(request):
     if request.method == "POST":
         try:
-            projeto = get_object_or_404(MProject, pk=request.POST['projeto'])
+            # Cadastrar o dev
             nome = request.POST['nome']
             email = request.POST['email']
             id_jira = request.POST['id_jira']
             experiencias = request.POST['experiencias']
-            desenvolvedor = MDev(name=nome, email=email, project=projeto, id_jira=id_jira)
+            desenvolvedor = MDev(name=nome, email=email, id_jira=id_jira)
             desenvolvedor.save()
 
+            # Vincula as liguagens
+            linguagens = request.POST.getlist("linguagens")
+
+            for ling in linguagens:
+                linguagem = get_object_or_404(Linguagem, pk=ling)
+                desenvolvedor.linguagens.add(linguagem)
+
+            desenvolvedor.save()
+
+            # Cadatra as experiências e linca ao dev
             experiencias = experiencias.lower()
             experiencias = experiencias.split(",")
             exps = []
@@ -74,11 +97,13 @@ def cadastrar_desenvolverdor(request):
             return redirect('core:detalhe_dev', desenvolvedor_id=desenvolvedor.id)
         except (KeyError):
             projetos = MProject.objects.all()
-            args = {"projetos": projetos}
+            linguagens = Linguagem.objects.all()
+            args = {"projetos": projetos, "linguagens": linguagens}
             return render(request, "core/cadastrar_desenvolvedor.html", args)
     else:
         projetos = MProject.objects.all()
-        args = {"projetos": projetos}
+        linguagens = Linguagem.objects.all()
+        args = {"projetos": projetos, "linguagens": linguagens}
         return render(request, "core/cadastrar_desenvolvedor.html", args)
 
 
@@ -151,11 +176,8 @@ def listar_alodos(request, projeto_id):
 
 def alocar_dev(request,projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
-    devs_mesa = MDev.objects.all().filter(alocacaop__isnull=True)
+    devs_mesa = MDev.objects.all().filter(alocacaop__isnull=True).filter(linguagens__in=projeto.linguagens.all())
     args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all(), "devs_mesa": devs_mesa}
-
-
-
 
     if request.method == "POST":
         try:
