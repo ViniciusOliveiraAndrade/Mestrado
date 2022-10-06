@@ -45,15 +45,6 @@ class AlocacaoP(models.Model):
     def __str__(self):
         return self.projeto.name + " - " + self.dev.name
 
-#
-# class AlocacaoS(models.Model):
-#     Squad = models.ForeignKey(Squad, on_delete=models.CASCADE)
-#     # dev = models.ForeignKey(MDev, on_delete=models.SET_NULL, blank=True, null=True)
-#     dev = models.ForeignKey(MDev, on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return self.Squad.nome + " - " + self.dev.name
-
 
 class JiraIssues(models.Model):
     storyPoint = models.IntegerField(default=1)
@@ -73,7 +64,8 @@ class Recommendation(models.Model):
 
 class Experiencia(models.Model):
     exp = models.CharField(max_length=100)
-    dev = models.ManyToManyField(MDev)
+    dev = models.ManyToManyField(MDev, blank=True)
+    projeto = models.ManyToManyField(MProject, blank=True)
 
     def __str__(self):
         return self.exp

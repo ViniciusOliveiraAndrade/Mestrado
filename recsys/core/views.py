@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, JsonResponse
 from .models import *
+from .Recommender import Recommender
 
 
 # Create your views here.
@@ -28,6 +29,8 @@ def cadastrar_projeto(request):
             nome = request.POST['nome']
             url = request.POST['url']
             status = True if request.POST['status'] == "on" else False
+            experiencias = request.POST['experiencias']
+
             projeto = MProject(name=nome, url=url, status=status)
             projeto.save()
 
@@ -39,6 +42,17 @@ def cadastrar_projeto(request):
                 projeto.linguagens.add(linguagem)
 
             projeto.save()
+
+            # Cadatra as experiências e linca ao dev
+            experiencias = experiencias.lower()
+            experiencias = experiencias.split(",")
+            exps = []
+
+            for exp in experiencias:
+                exps.append(exp.strip())
+            for exp in exps:
+                Ex, created = Experiencia.objects.get_or_create(exp=exp)
+                Ex.projeto.add(projeto)
 
             return redirect('core:detalhe_projeto', projeto_id=projeto.id)
         except (KeyError):
@@ -176,7 +190,14 @@ def listar_alodos(request, projeto_id):
 
 def alocar_dev(request,projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
-    devs_mesa = MDev.objects.all().filter(alocacaop__isnull=True).filter(linguagens__in=projeto.linguagens.all())
+    # devs_mesa = MDev.objects.all().filter(alocacaop__isnull=True).filter(linguagens__in=projeto.linguagens.all())
+    devs_mesa = MDev.objects.all()
+
+    # Area de recomendacao
+    recomendador = Recommender()
+    recomendador.recomendar_dev_para_projeto(projeto, devs_mesa)
+
+
     args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all(), "devs_mesa": devs_mesa}
 
     if request.method == "POST":
