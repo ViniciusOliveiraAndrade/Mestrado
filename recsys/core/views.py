@@ -44,7 +44,7 @@ def cadastrar_projeto(request):
             projeto.save()
 
             # Cadatra as experiências e linca ao dev
-            experiencias = experiencias.lower()
+            experiencias = experiencias.lower().replace(".","").replace("!","").replace(";",",")
             experiencias = experiencias.split(",")
             exps = []
 
@@ -63,6 +63,50 @@ def cadastrar_projeto(request):
         linguagens = Linguagem.objects.all()
         args = {"linguagens": linguagens}
         return render(request, 'core/cadastrar_projeto.html', args)
+
+def editar_projeto(request,projeto_id):
+    projeto = get_object_or_404(MProject, pk=projeto_id)
+    if request.method == 'POST':
+        try:
+            nome = request.POST['nome']
+            url = request.POST['url']
+            status = True if request.POST['status'] == "on" else False
+            experiencias = request.POST['experiencias']
+
+            projeto.name = nome
+            projeto.url = url
+            projeto.status = status
+            projeto.save()
+
+            # Vincula as liguagens
+            linguagens = request.POST.getlist("linguagens")
+
+            for ling in linguagens:
+                linguagem = get_object_or_404(Linguagem, pk=ling)
+                projeto.linguagens.add(linguagem)
+
+            projeto.save()
+
+            # Cadatra as experiências e linca ao dev
+            experiencias = experiencias.lower().replace(".","").replace("!","").replace(";",",")
+            experiencias = experiencias.split(",")
+            exps = []
+
+            for exp in experiencias:
+                exps.append(exp.strip())
+            for exp in exps:
+                Ex, created = Experiencia.objects.get_or_create(exp=exp)
+                Ex.projeto.add(projeto)
+
+            return redirect('core:detalhe_projeto', projeto_id=projeto.id)
+        except (KeyError):
+            linguagens = Linguagem.objects.all()
+            args = {"linguagens": linguagens, "projeto":projeto}
+            return render(request, 'core/editar_projeto.html', args)
+    else:
+        linguagens = Linguagem.objects.all()
+        args = {"linguagens": linguagens, "projeto":projeto}
+        return render(request, 'core/editar_projeto.html', args)
 
 
 def desenvolvedores(request):
@@ -195,10 +239,19 @@ def alocar_dev(request,projeto_id):
 
     # Area de recomendacao
     recomendador = Recommender()
-    recomendador.recomendar_dev_para_projeto(projeto, devs_mesa)
+    # devs_do_recomendador = recomendador.recomendar_dev_para_projeto(projeto, devs_mesa).items()
+    devs_do_recomendador = recomendador.recomendar_dev_para_projeto(projeto, devs_mesa)
+    ids_devs_recomendados=[]
 
 
-    args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all(), "devs_mesa": devs_mesa}
+    devs_recomendados = []
+
+    for id_dev in devs_do_recomendador:
+        devs_recomendados.append(get_object_or_404(MDev, pk=id_dev))
+        ids_devs_recomendados.append(id_dev)
+    devs_disponiveis = MDev.objects.all().exclude(id__in=ids_devs_recomendados)
+
+    args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all(), "devs_mesa": devs_disponiveis, "devs_recomendados":devs_recomendados}
 
     if request.method == "POST":
         try:

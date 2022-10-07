@@ -34,7 +34,7 @@
 
             <select class="form-select" multiple aria-label="multiple select example" name="devs_recomendados">
                 {% for dev in devs_recomendados %}
-                <option value="{{ dev.id }}">{{ dev.name }}{% if dev.linguagens.first %} - {{dev.linguagens.first}} {% endif %} </option>
+                <option value="{{ dev.id }}">{{ dev.name }}{% if dev.linguagens.first %} - {% endif %}{% for ling in dev.linguagens.all %}{{ling.nome}}{% if forloop.counter <  dev.linguagens.all|length %},{% else %}.{% endif %} {% endfor %} </option>
                 {% endfor %}
             </select>
 
@@ -50,7 +50,7 @@
 
             <select class="form-select" multiple aria-label="multiple select example" name="devs_mesa">
                 {% for dev in devs_mesa %}
-                <option value="{{ dev.id }}">{{ dev.name }}{% if dev.linguagens.first %} - {{dev.linguagens.first}} {% endif %} </option>
+                <option value="{{ dev.id }}">{{ dev.name }}{% if dev.linguagens.first %} - {% endif %}{% for ling in dev.linguagens.all %}{{ling.nome}}{% if forloop.counter <  dev.linguagens.all|length %},{% else %}.{% endif %} {% endfor %} </option>
                 {% endfor %}
             </select>
         </div>
