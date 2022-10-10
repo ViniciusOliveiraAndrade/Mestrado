@@ -246,9 +246,9 @@ def alocar_dev(request,projeto_id):
 
     devs_recomendados = []
 
-    for id_dev in devs_do_recomendador:
-        devs_recomendados.append(get_object_or_404(MDev, pk=id_dev))
-        ids_devs_recomendados.append(id_dev)
+    for dev in devs_do_recomendador:
+        devs_recomendados.append(get_object_or_404(MDev, pk=dev["id"]))
+        ids_devs_recomendados.append(dev["id"])
     devs_disponiveis = MDev.objects.all().exclude(id__in=ids_devs_recomendados)
 
     args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all(), "devs_mesa": devs_disponiveis, "devs_recomendados":devs_recomendados}

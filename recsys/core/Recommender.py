@@ -69,11 +69,9 @@ class Recommender:
 
         """
 
-
+        """
         # Filtragem e raqueamento
-
         devs_recomendados = {}
-
         devs_e_experiencia = {}
 
 
@@ -81,7 +79,7 @@ class Recommender:
             lista_experiencia = []
             for experiencia in dev.experiencia_set.all():
                 lista_experiencia.append(experiencia.exp)
-            devs_e_experiencia[dev.id] = lista_experiencia
+            devs_e_experiencia[dev.name] = lista_experiencia
 
         for experiencia in projeto.experiencia_set.all():
 
@@ -91,6 +89,30 @@ class Recommender:
                         devs_recomendados[key]=devs_recomendados[key]+1
                     else:
                         devs_recomendados[key]=1
+
+        print(devs_recomendados)
+        """
+
+        # Filtragem ranqueada v2
+
+        devs_recomendados = []
+        devs_e_experiencia = {}
+
+        for dev in listaDevs:
+            lista_experiencia = []
+            for experiencia in dev.experiencia_set.all():
+                lista_experiencia.append(experiencia.exp)
+            devs_e_experiencia[dev.id] = lista_experiencia
+
+        for key in devs_e_experiencia:
+            dev = {"id": key, "qt": 0}
+            for experiencia in projeto.experiencia_set.all():
+                    if experiencia.exp in devs_e_experiencia[key]:
+                        dev["qt"] += 1
+            if dev["qt"]>0:
+                devs_recomendados.append(dev)
+
+        devs_recomendados = sorted(devs_recomendados, key=lambda d: d['qt'], reverse=True)
 
         print(devs_recomendados)
         return devs_recomendados
