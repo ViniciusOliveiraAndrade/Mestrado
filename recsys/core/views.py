@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http import HttpResponse, JsonResponse
 from .models import *
 from .Recommender import Recommender
+import re
 # import nltk
 from nltk import word_tokenize
 from nltk import RSLPStemmer
@@ -16,9 +17,11 @@ from nltk import RSLPStemmer
 def projetos(request):
     projects = MProject.objects.all()
     args = {'projects': projects}
-    limpar_texto("sdsd sokdoasd, soadosakd ,sodaksosdaod ,sadl !  sldlsodl texto Neste momento tem apenas 203 "
-                 "palavras, o que me parece muito pouco. Há uma lista destas palavras no github.Para testar a "
-                 "pontuação, pode ser usado o código seguinte:")
+    tesxt = limpar_texto("sdsd sokdoasd, soadosakd ,sodaksosdaod ,sadl !  sldlsodl texto Neste momento tem apenas 203 "
+                 "palavras, o que me parece muito pouco. Há uma lista destas palavras no github. Para testar a "
+                 "https://realpython.com/python-string-contains-substring/ hub segredo https://www.figma.com/"
+                 "pontuação, https://stackoverflow.com/questions/11331982/how-to-remove-any-url-within-a-string-in-pythonpode ser usado o código seguinte: https://www.figma.com/ ")
+    print(tesxt)
     return render(request, 'core/listar_projetos.html', args)
 
 
@@ -339,8 +342,12 @@ def cadastrar_issue(jiraIssue):
 
 
 def limpar_texto(texto):
+
+    # Remover links
+    texto_sem_links = re.sub('http://\S+|https://\S+', '', texto)
+
     # Tokenize o texto
-    texto_tokenizado = word_tokenize(texto)
+    texto_tokenizado = word_tokenize(texto_sem_links)
 
     # Remover stopwords
     stopwords = ['a', 'à', 'adeus', 'agora', 'aí', 'ainda', 'além', 'algo', 'alguém', 'algum', 'alguma', 'algumas',
