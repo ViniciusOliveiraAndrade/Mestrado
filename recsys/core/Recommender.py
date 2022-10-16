@@ -114,5 +114,32 @@ class Recommender:
 
         devs_recomendados = sorted(devs_recomendados, key=lambda d: d['qt'], reverse=True)
 
-        print(devs_recomendados)
+        # print(devs_recomendados)
+        return devs_recomendados
+
+
+    def recomendar_dev_para_JiraIssue(self,issue, listaDevs):
+
+        # Filtragem ranqueada v1
+
+        devs_recomendados = []
+        devs_e_experiencia = {}
+
+        for dev in listaDevs:
+            lista_experiencia = []
+            for experiencia in dev.experiencia_set.all():
+                lista_experiencia.append(experiencia.exp)
+            devs_e_experiencia[dev.id] = lista_experiencia
+
+        for key in devs_e_experiencia:
+            dev = {"id": key, "qt": 0}
+            for experiencia in issue.experiencia_set.all():
+                    if experiencia.exp in devs_e_experiencia[key]:
+                        dev["qt"] += 1
+            if dev["qt"]>0:
+                devs_recomendados.append(dev)
+
+        devs_recomendados = sorted(devs_recomendados, key=lambda d: d['qt'], reverse=True)
+
+        # print(devs_recomendados)
         return devs_recomendados

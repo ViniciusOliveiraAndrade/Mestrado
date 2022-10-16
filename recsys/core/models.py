@@ -45,6 +45,9 @@ class AlocacaoP(models.Model):
     def __str__(self):
         return self.projeto.name + " - " + self.dev.name
 
+class Termo(models.Model):
+    palavra = models.CharField(max_length=25)
+    quantidade = models.IntegerField(default=0)
 
 class JiraIssues(models.Model):
     storyPoint = models.IntegerField(default=1)
@@ -52,6 +55,8 @@ class JiraIssues(models.Model):
     description = models.TextField(blank=False)
     feature = models.CharField(max_length=100)
     title = models.CharField(max_length=250)
+    dev = models.ForeignKey(MDev, on_delete=models.CASCADE,default=None)
+    termos = models.ManyToManyField(Termo)
 
 
 class Recommendation(models.Model):

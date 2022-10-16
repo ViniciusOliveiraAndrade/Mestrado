@@ -6,6 +6,10 @@ from .Recommender import Recommender
 
 # Create your views here.
 
+# ...
+# ...
+# Area do projeto
+
 def projetos(request):
     projects = MProject.objects.all()
     args = {'projects': projects}
@@ -44,7 +48,7 @@ def cadastrar_projeto(request):
             projeto.save()
 
             # Cadatra as experiências e linca ao dev
-            experiencias = experiencias.lower().replace(".","").replace("!","").replace(";",",")
+            experiencias = experiencias.lower().replace(".", "").replace("!", "").replace(";", ",")
             experiencias = experiencias.split(",")
             exps = []
 
@@ -64,7 +68,8 @@ def cadastrar_projeto(request):
         args = {"linguagens": linguagens}
         return render(request, 'core/cadastrar_projeto.html', args)
 
-def editar_projeto(request,projeto_id):
+
+def editar_projeto(request, projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
     if request.method == 'POST':
         try:
@@ -88,7 +93,7 @@ def editar_projeto(request,projeto_id):
             projeto.save()
 
             # Cadatra as experiências e linca ao dev
-            experiencias = experiencias.lower().replace(".","").replace("!","").replace(";",",")
+            experiencias = experiencias.lower().replace(".", "").replace("!", "").replace(";", ",")
             experiencias = experiencias.split(",")
             exps = []
 
@@ -101,13 +106,17 @@ def editar_projeto(request,projeto_id):
             return redirect('core:detalhe_projeto', projeto_id=projeto.id)
         except (KeyError):
             linguagens = Linguagem.objects.all()
-            args = {"linguagens": linguagens, "projeto":projeto}
+            args = {"linguagens": linguagens, "projeto": projeto}
             return render(request, 'core/editar_projeto.html', args)
     else:
         linguagens = Linguagem.objects.all()
-        args = {"linguagens": linguagens, "projeto":projeto}
+        args = {"linguagens": linguagens, "projeto": projeto}
         return render(request, 'core/editar_projeto.html', args)
 
+
+# ...
+# ...
+# Area do desenvolvedor
 
 def desenvolvedores(request):
     desenvolvedores = MDev.objects.all()
@@ -165,9 +174,9 @@ def cadastrar_desenvolverdor(request):
         return render(request, "core/cadastrar_desenvolvedor.html", args)
 
 
-def recomendacao(request, projeto_id):
-    return HttpResponse("Tela da recomendação do projeto %s" % projeto_id)
-
+# ...
+# ...
+# Area da squad
 
 def listar_squad(request, projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
@@ -227,12 +236,17 @@ def deletar_squad(request, projeto_id, squad_id):
         return redirect('core:squads', projeto_id=projeto_id)
 
 
+# ...
+# ...
+# Alocação de dev para projeto
+
 def listar_alodos(request, projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
     args = {"projeto": projeto, "alocados": projeto.alocacaop_set.all()}
     return render(request, "core/listar_alocacao.html", args)
 
-def alocar_dev(request,projeto_id):
+
+def alocar_dev(request, projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
     # devs_mesa = MDev.objects.all().filter(alocacaop__isnull=True).filter(linguagens__in=projeto.linguagens.all())
     devs_mesa = MDev.objects.all()
@@ -241,8 +255,7 @@ def alocar_dev(request,projeto_id):
     recomendador = Recommender()
     # devs_do_recomendador = recomendador.recomendar_dev_para_projeto(projeto, devs_mesa).items()
     devs_do_recomendador = recomendador.recomendar_dev_para_projeto(projeto, devs_mesa)
-    ids_devs_recomendados=[]
-
+    ids_devs_recomendados = []
 
     devs_recomendados = []
 
@@ -251,7 +264,8 @@ def alocar_dev(request,projeto_id):
         ids_devs_recomendados.append(dev["id"])
     devs_disponiveis = MDev.objects.all().exclude(id__in=ids_devs_recomendados)
 
-    args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all(), "devs_mesa": devs_disponiveis, "devs_recomendados":devs_recomendados}
+    args = {"projeto": projeto, "alocacao": projeto.alocacaop_set.all(), "devs_mesa": devs_disponiveis,
+            "devs_recomendados": devs_recomendados}
 
     if request.method == "POST":
         try:
@@ -275,9 +289,10 @@ def alocar_dev(request,projeto_id):
     else:
         return render(request, "core/alocar_dev.html", args)
 
-def alocar_dev_squad(request,projeto_id,dev_id):
+
+def alocar_dev_squad(request, projeto_id, dev_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
-    dev = get_object_or_404(MDev,pk=dev_id)
+    dev = get_object_or_404(MDev, pk=dev_id)
     args = {"projeto": projeto, "dev": dev}
 
     if request.method == "POST":
@@ -300,3 +315,12 @@ def remover_alocar_dev(request, projeto_id, alocacao_id):
     alocao = get_object_or_404(AlocacaoP, pk=alocacao_id)
     alocao.delete()
     return redirect('core:listar_alocacao', projeto_id=projeto_id)
+
+
+# ...
+# ...
+# Alocação de dev para uma issue
+
+
+def recomendacao(request, projeto_id):
+    return HttpResponse("Tela da recomendação do projeto %s" % projeto_id)
