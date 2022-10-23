@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http import HttpResponse, JsonResponse
 from .models import *
 from .Recommender import Recommender
+from .MJira import MesaJira
 import re
 # import nltk
 from nltk import word_tokenize
@@ -27,11 +28,27 @@ def projetos(request):
 
 def detalhar_projeto(request, projeto_id):
     projeto = get_object_or_404(MProject, pk=projeto_id)
+    args = {"projeto": projeto}
     try:
         alocacao = get_list_or_404(AlocacaoP, projeto=projeto)
-        args = {"projeto": projeto, "alocacao": alocacao}
+        args["alocacao"] = alocacao
     except Exception:
-        args = {"projeto": projeto}
+        print("Deu erro pegando alocacao")
+
+    mesa_jira = MesaJira()
+    squads = {}
+
+    # try:
+
+    # for squad in projeto.squad_set.all():
+    #     squads[squad.nome] = mesa_jira.get_squad_data(projeto, squad)
+    # args["squads"] = squads
+    # except Exception:
+    #     print("Deu erro pegando os dados da squad")
+
+    # print(projeto.squad_set.first().sprint)
+    mesa_jira.get_squad_data(projeto, projeto.squad_set.first())
+
 
     return render(request, "core/detalhe_projeto.html", args)
 
