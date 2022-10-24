@@ -23,14 +23,30 @@ class MesaJira:
         sprint = squad.sprint
         projeto_name = projeto.name
 
-        # cards = jira.search_issues('project = \"'+projeto_name+'\" AND Sprint = '+sprint+' AND status in ("Para Iniciar", "Impedimento/Pausa") AND type in (Historia,Melhoria,Ajuste,Refatoração,Hotfix) ORDER BY type DESC')
+        cards = jira.search_issues('project = \"'+projeto_name+'\" AND Sprint = '+sprint+' AND status in ("Para Iniciar", "Impedimento/Pausa") AND type in (Historia,Melhoria,Ajuste,Refatoração,Hotfix) ORDER BY type DESC')
+
+
+        # debug dos cards
         # for card in cards:
         #     print(card)
 
-        ts = jira.issue('TS-658')
+        # debug dos issue
+        # ts = jira.issue('TS-658')
+        # for key in ts.__dict__:
+        #     # print("Name: {} |Value: {}".format(key, ts.__dict__[key]))
+        #     print(ts.key)
+        #     # print(ts.)
 
-        # print(ts.__dict__)
-        for key in ts.__dict__:
-            print("Name: {} |Value: {}".format(key, ts.__dict__[key]))
+        # debug dos issue fields
+        # ts = jira.issue('TS-658')
+        # arquivo = open('issue.txt', 'w+')
+        # texto = arquivo.readlines()
+        # for k in ts.fields.__dict__:
+        #     print("Name: {} |Value: {}".format(k, ts.fields.__dict__[k]))
+        #     if ts.fields.__dict__[k]:
+        #         texto.append("\nName: {} |Value: {}".format(k, ts.fields.__dict__[k]))
+        # arquivo.writelines(texto)
+        # arquivo.close()
 
-        # return cards
+
+        return cards

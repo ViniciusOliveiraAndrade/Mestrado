@@ -38,16 +38,16 @@ def detalhar_projeto(request, projeto_id):
     mesa_jira = MesaJira()
     squads = {}
 
-    # try:
+    try:
 
-    # for squad in projeto.squad_set.all():
-    #     squads[squad.nome] = mesa_jira.get_squad_data(projeto, squad)
-    # args["squads"] = squads
-    # except Exception:
-    #     print("Deu erro pegando os dados da squad")
+        for squad in projeto.squad_set.all():
+            squads[squad.nome] = mesa_jira.get_squad_data(projeto, squad)
+        args["squads"] = squads
+    except Exception:
+        print("Deu erro pegando os dados da squad")
 
     # print(projeto.squad_set.first().sprint)
-    mesa_jira.get_squad_data(projeto, projeto.squad_set.first())
+    # mesa_jira.get_squad_data(projeto, projeto.squad_set.first())
 
 
     return render(request, "core/detalhe_projeto.html", args)
