@@ -1,7 +1,7 @@
 {% extends 'core/layout/base.html'%}
-
+{% block titulo %}Edit - {{squad.nome}}{% endblock %}
 {% block main %}
-<h1 class="mt-4">Editar Squad {{squad.nome}}</h1>
+<h1 class="mt-4">Edit - {{squad.nome}}</h1>
 
 <div class="card mb-4">
     <div class="card-body">
@@ -10,21 +10,21 @@
             <div class="row mb-3">
                 <div class="col-md-8">
                     <div class="form-floating mb-3 mb-md-0">
-                        <input class="form-control"name="nome"  id="nome" type="text" placeholder="Insira o nome da Squad" value="{{squad.nome}}" required />
-                        <label for="nome">Nome da squad</label>
+                        <input class="form-control"name="nome"  id="nome" type="text" placeholder="Enter Squad name" value="{{squad.nome}}" required />
+                        <label for="nome">Squad name*</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-floating mb-3 mb-md-0">
-                        <input class="form-control"name="sprint"  id="sprint" type="text" placeholder="Insira o ID da Squad " value="{{squad.sprint}}" required />
-                        <label for="sprint">Digite o ID da Sprint</label>
+                        <input class="form-control"name="sprint"  id="sprint" type="text" placeholder="Enter Sprint ID" value="{{squad.sprint}}" required />
+                        <label for="sprint">Enter Sprint ID*</label>
                         <input class="form-control invisible"name="projeto"  id="projeto" type="text" value="{{squad.projeto.id}}" />
                     </div>
                 </div>
             </div>
             <div class="mt-4 mb-0">
                 <div class="d-grid">
-                    <input class="btn btn-primary btn-block" type="submit" value="Editar">
+                    <input class="btn btn-primary btn-block" type="submit" value="Edit">
                 </div>
             </div>
         </form>

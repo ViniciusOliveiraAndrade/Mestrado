@@ -1,7 +1,7 @@
 {% extends 'core/layout/base.html'%}
-
+{% block titulo %}Register Squad{% endblock %}
 {% block main %}
-<h1 class="mt-4">Cadastrar nova Squad</h1>
+<h1 class="mt-4">Register new Squad</h1>
 
 <div class="card mb-4">
     <div class="card-body">
@@ -10,21 +10,21 @@
             <div class="row mb-3">
                 <div class="col-md-8">
                     <div class="form-floating mb-3 mb-md-0">
-                        <input class="form-control"name="nome"  id="nome" type="text" placeholder="Insira o nome da Squad" required />
-                        <label for="nome">Nome da squad</label>
+                        <input class="form-control"name="nome"  id="nome" type="text" placeholder="Enter Squad name" required />
+                        <label for="nome">Squad name*</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-floating mb-3 mb-md-0">
-                        <input class="form-control"name="sprint"  id="sprint" type="text" placeholder="Insira o id do Jira" required />
-                        <label for="sprint">Digite o ID da Sprint</label>
+                        <input class="form-control"name="sprint"  id="sprint" type="text" placeholder="Enter Sprint ID" required />
+                        <label for="sprint">Enter Sprint ID*</label>
                         <input class="form-control invisible"name="projeto"  id="projeto" type="text" value="{{projeto.id}}" />
                     </div>
                 </div>
             </div>
             <div class="mt-4 mb-0">
                 <div class="d-grid">
-                    <input class="btn btn-primary btn-block" type="submit" value="Cadastrar">
+                    <input class="btn btn-primary btn-block" type="submit" value="Register">
                 </div>
             </div>
         </form>

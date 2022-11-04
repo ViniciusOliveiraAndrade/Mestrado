@@ -1,7 +1,7 @@
 {% extends 'core/layout/base.html'%}
-
+{% block titulo %}Developer allocation{% endblock %}
 {% block main %}
-<h1 class="mt-4">Alocação de desenvolvedores</h1>
+<h1 class="mt-4">Developer allocation</h1>
 <ol class="breadcrumb mb-4">
     <!--    <li class="breadcrumb-item active"> Squads do projeto {{projeto.nome}}</li>-->
     <!--    <li class="breadcrumb-item active">Cadastrar novo projeto</li>-->
@@ -17,8 +17,8 @@
     {% csrf_token %}
     <div class="card-header mb-6">
         <div class="d-flex align-items-center justify-content-between">
-            <i class="fas fa-table me-1"></i>Alocação
-            <a class="btn btn-primary ml-4 float-right" onclick="window.location = ('{% url 'core:detalhe_projeto' projeto.id %}');">Voltar para o projeto</a>
+            <i class="fas fa-table me-1"></i>Allocation
+            <a class="btn btn-primary ml-4 float-right" onclick="window.location = ('{% url 'core:detalhe_projeto' projeto.id %}');">Back to project</a>
         </div>
     </div>
 
@@ -26,7 +26,7 @@
     <div class="card col-6 mt-4">
         <div class="card-header">
             <div class="d-flex align-items-center justify-content-between">
-                Devs recomendado
+                Recommended devs based on expertise and programming language
             </div>
         </div>
 
@@ -43,7 +43,7 @@
 
     <div class="card col-6 mt-4">
         <div class="card-header">
-            Devs da mesa
+            Recommended devs based on programming language only
         </div>
 
         <div class="card-body">
@@ -58,7 +58,7 @@
     <div class="card-footer d-flex align-items-center justify-content-between">
         <i> </i>
         <i> </i>
-        <input class="btn btn-primary ml-4 float-right" type="submit" value="Alocar"/>
+        <input class="btn btn-primary ml-4 float-right" type="submit" value="Allocate"/>
     </div>
 
 </form>

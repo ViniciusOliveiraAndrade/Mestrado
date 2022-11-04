@@ -1,7 +1,7 @@
 {% extends 'core/layout/base.html'%}
-
+{% block titulo %}Project - {{projeto.name}}{% endblock %}
 {% block main %}
-<h1 class="mt-4">Detalhe do projeto</h1>
+<h1 class="mt-4">Project detail</h1>
 <!--<ol class="breadcrumb mb-4">-->
 <!--    <li class="breadcrumb-item active">Todos os projetos</li>-->
 <!--    <li class="breadcrumb-item active">Cadastrar novo projeto</li>-->
@@ -22,15 +22,15 @@
                     <div class="col-md-8">
                         <div class="form-floating mb-3 mb-md-0">
                             <input class="form-control" name="nome" id="nome" type="text"
-                                   placeholder="Insira o nome do projeto" required disabled value="{{projeto.name}}"/>
-                            <label for="nome">Nome do projeto</label>
+                                   placeholder="Enter the project name" required disabled value="{{projeto.name}}"/>
+                            <label for="nome">Project name</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" name="status" id="status" {% if projeto.status %} checked {% endif %} disabled>
-                                <label class="form-check-label" for="status">{% if projeto.status %}Projeto ativo{% else %}Projeto inativo{% endif %}</label>
+                                <label class="form-check-label" for="status">{% if projeto.status %}Active project{% else %}Inactive project{% endif %}</label>
                             </div>
                         </div>
                     </div>
@@ -48,23 +48,23 @@
         <div class="card mb-4">
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
-                    <i class="fas fa-people-group me-1"></i>Alocação
-                    <a class="btn btn-primary ml-4" href="{% url 'core:listar_alocacao' projeto.id %}">Gerenciar
-                        Alocação</a>
+                    <i class="fas fa-people-group me-1"></i>Allocation
+                    <a class="btn btn-primary ml-4" href="{% url 'core:listar_alocacao' projeto.id %}">Manage allocation
+                    </a>
                 </div>
             </div>
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
                     <tr>
-                        <th>Nome</th>
+                        <th>Name</th>
                         <th>Squad</th>
                         <!--                        <th>Ações</th>-->
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
-                        <th>Nome</th>
+                        <th>Name</th>
                         <th>Squad</th>
                         <!--                        <th>Ações</th>-->
                     </tr>
@@ -74,7 +74,7 @@
                     {% for alocado in alocacao %}
                     <tr>
                         <td>{{alocado.dev.name}}</td>
-                        <td>{% if alocado.squad %} {{alocado.squad.nome}} {% else %} Não alocado {% endif %}</td>
+                        <td>{% if alocado.squad %} {{alocado.squad.nome}} {% else %} Not allocated {% endif %}</td>
                         <!--                        <td>-->
                         <!--                            <a href="{% url 'core:detalhe_projeto' alocado.projeto.id %}"><i class="fas fa-eye me-1"></i></a>-->
                         <!--                            <a href="{% url 'core:detalhe_projeto' alocado.projeto.id %}"><i class="fas fa-pen me-1"></i></a>-->
@@ -101,7 +101,7 @@
             <div class="card-header">
                 <div class="d-flex align-items-center justify-content-between">
                     <i class="fas fa-table me-1"></i>Squads
-                    <a class="btn btn-primary ml-4" href="{% url 'core:squads' projeto.id %}">Gerenciar Squads</a>
+                    <a class="btn btn-primary ml-4" href="{% url 'core:squads' projeto.id %}">Manage Squads</a>
                 </div>
             </div>
             <div id="squads" hidden>{% for squad in projeto.squad_set.all %}{{squad.nome}}{% if forloop.counter <  projeto.squad_set.all|length %},{% endif %}{% endfor %}</div>
@@ -133,14 +133,14 @@
                             <tr>
                                 <th>Card</th>
                                 <th>Dev</th>
-                                <th>Ações</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Card</th>
                                 <th>Dev</th>
-                                <th>Ações</th>
+                                <th>Actions</th>
                             </tr>
                             </tfoot>
 

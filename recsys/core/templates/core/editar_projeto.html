@@ -1,7 +1,7 @@
 {% extends 'core/layout/base.html'%}
-
+{% block titulo %}Edit - {{projeto.name}}{% endblock %}
 {% block main %}
-<h1 class="mt-4">Editar - {{projeto.name}}</h1>
+<h1 class="mt-4">Edit - {{projeto.name}}</h1>
 <!--<ol class="breadcrumb mb-4">-->
 <!--    <li class="breadcrumb-item active">Todos os projetos</li>-->
 <!--    <li class="breadcrumb-item active">Cadastrar novo projeto</li>-->
@@ -24,20 +24,20 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="form-floating mb-3 mb-md-0">
-                                    <input class="form-control"name="nome"  id="nome" type="text" placeholder="Insira o nome do projeto" required value="{{projeto.name}}"/>
-                                    <label for="nome">Nome do projeto</label>
+                                    <input class="form-control"name="nome"  id="nome" type="text" placeholder="Enter the project name" required value="{{projeto.name}}"/>
+                                    <label for="nome">Project name*</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-floating">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" name="status" id="status" {% if projeto.status %}checked{% endif %}>
-                                    <label class="form-check-label" for="status">Projeto ativo</label>
+                                    <label class="form-check-label" for="status">{% if projeto.status %}Active project{% else %}Inactive project{% endif %}</label>
                                 </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <label for="linguagens">Linguagens*</label>
+                                <label for="linguagens">Languages*</label>
                                 <select class="form-select" multiple aria-label="multiple select example" name="linguagens" id="linguagens" required>
                                     {% for ling in linguagens %}
                                     <option value="{{ ling.id }}" {% if ling in projeto.linguagens.all %}selected{% endif %}>{{ ling.nome }} </option>
@@ -47,22 +47,22 @@
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input class="form-control" name="url" id="url" type="text" placeholder="Insira a url do projeto no jira" required value="{{projeto.url}}"/>
-                            <label for="url">URL do projeto</label>
+                            <input class="form-control" name="url" id="url" type="text" placeholder="Enter project URL in jira" required value="{{projeto.url}}"/>
+                            <label for="url">Project URL*</label>
                             <!--                            <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />-->
 <!--                            <label for="inputEmail">Email address</label>-->
                         </div>
 
                          <div class="form-floating mb-3">
                              <div class="form-floating">
-                              <textarea class="form-control" name="experiencias" placeholder="Insira as experiências do desenvolvedor" id="experiencias" required>{% for exp in projeto.experiencia_set.all %}{{exp}}{% if forloop.counter <  projeto.experiencia_set.all|length %},{% else %}.{% endif %} {% endfor %}</textarea>
-                              <label for="experiencias">Experiências*</label>
+                              <textarea class="form-control" name="experiencias" placeholder="Enter project characteristics" id="experiencias" required>{% for exp in projeto.experiencia_set.all %}{{exp}}{% if forloop.counter <  projeto.experiencia_set.all|length %},{% else %}.{% endif %} {% endfor %}</textarea>
+                              <label for="experiencias">Characteristics*</label>
                             </div>
                         </div>
 
                         <div class="mt-4 mb-0">
                             <div class="d-grid">
-                                <input class="btn btn-primary btn-block" type="submit" value="Editar">
+                                <input class="btn btn-primary btn-block" type="submit" value="Edit">
 <!--                            <a class="btn btn-primary btn-block" href="{% url 'core:cadastro_projeto' %}">Create Account</a>-->
                             </div>
                         </div>

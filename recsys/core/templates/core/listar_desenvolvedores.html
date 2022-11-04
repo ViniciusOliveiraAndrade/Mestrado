@@ -1,9 +1,9 @@
 {% extends 'core/layout/base.html'%}
-
+{% block titulo %}Developers{% endblock %}
 {% block main %}
-<h1 class="mt-4">Desenvolvedores</h1>
+<h1 class="mt-4">Developers</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">Todos os desenvolvedores</li>
+    <li class="breadcrumb-item active">All developers</li>
 <!--    <li class="breadcrumb-item active">Cadastrar novo projeto</li>-->
 </ol>
 
@@ -11,23 +11,23 @@
     <div class="card-header">
         <div class="d-flex align-items-center justify-content-between">
             <i class="fas fa-table me-1"></i>
-            <a class="btn btn-primary ml-4" href="{% url 'core:cadastro_dev' %}">Cadastrar novo desenvolvedor</a>
+            <a class="btn btn-primary ml-4" href="{% url 'core:cadastro_dev' %}">Register new developer</a>
         </div>
     </div>
     <div class="card-body">
         <table id="datatablesSimple">
             <thead>
                 <tr>
-                    <th>Nome</th>
+                    <th>Name</th>
                     <th>Status</th>
-                    <th>Ações</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <th>Nome</th>
+                    <th>Name</th>
                     <th>Status</th>
-                    <th>Ações</th>
+                    <th>Actions</th>
                 </tr>
             </tfoot>
             <tbody>

@@ -1,7 +1,7 @@
 {% extends 'core/layout/base.html'%}
-
+{% block titulo %}Squads{% endblock %}
 {% block main %}
-<h1 class="mt-4">Squads do projeto {{projeto.name}}</h1>
+<h1 class="mt-4">{{projeto.name}} squads</h1>
 <ol class="breadcrumb mb-4">
 <!--    <li class="breadcrumb-item active"> Squads do projeto {{projeto.name}}</li>-->
 <!--    <li class="breadcrumb-item active">Cadastrar novo projeto</li>-->
@@ -11,24 +11,24 @@
     <div class="card-header">
         <div class="d-flex align-items-center justify-content-between">
             <i class="fas fa-table me-1"></i>
-            <a class="btn btn-primary ml-4 float-righ" onclick="window.location = ('{% url 'core:detalhe_projeto' projeto.id %}');">Voltar para o projeto</a>
-            <a class="btn btn-primary ml-4" href="{% url 'core:cadastro_squad' projeto.id %}">Cadastrar nova Squad</a>
+            <a class="btn btn-primary ml-4 float-righ" onclick="window.location = ('{% url 'core:detalhe_projeto' projeto.id %}');">Back to project</a>
+            <a class="btn btn-primary ml-4" href="{% url 'core:cadastro_squad' projeto.id %}">Register new Squad</a>
         </div>
     </div>
     <div class="card-body">
         <table id="datatablesSimple">
             <thead>
                 <tr>
-                    <th>Nome</th>
+                    <th>Name</th>
                     <th>Sprint - ID</th>
-                    <th>Ações</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <th>Nome</th>
+                    <th>Name</th>
                     <th>Sprint - ID</th>
-                    <th>Ações</th>
+                    <th>Actions</th>
                 </tr>
             </tfoot>
             <tbody>
