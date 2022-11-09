@@ -2,12 +2,12 @@ from jira import JIRA
 from .models import User_jira
 from django.shortcuts import get_object_or_404
 
+
 # Ver A key de API para ser usdo no lugar do usuário
 class MesaJira:
 
-
     def __init__(self):
-        self.user = get_object_or_404(User_jira,login="vinicius.oliveira@mesainc.com.br")
+        self.user = get_object_or_404(User_jira, login="vinicius.oliveira@mesainc.com.br")
         self.jira = None
 
     def get_jira_connection(self, host):
@@ -23,8 +23,8 @@ class MesaJira:
         sprint = squad.sprint
         projeto_name = projeto.name
 
-        cards = jira.search_issues('project = \"'+projeto_name+'\" AND Sprint = '+sprint+' AND status in ("Para Iniciar", "Impedimento/Pausa") AND type in (Historia,Melhoria,Ajuste,Refatoração,Hotfix) ORDER BY type DESC')
-
+        cards = jira.search_issues(
+            'project = \"' + projeto_name + '\" AND Sprint = ' + sprint + ' AND status in ("Para Iniciar", "Impedimento/Pausa") AND type in (Historia,Melhoria,Ajuste,Refatoração,Hotfix) ORDER BY type DESC')
 
         # debug dos cards
         # for card in cards:
@@ -39,7 +39,7 @@ class MesaJira:
 
         # debug dos issue fields
         # ts = jira.issue('TS-658')
-        # arquivo = open('issue.txt', 'w+')
+        # arquivo = open('issue fields.txt', 'w+')
         # texto = arquivo.readlines()
         # for k in ts.fields.__dict__:
         #     print("Name: {} |Value: {}".format(k, ts.fields.__dict__[k]))
@@ -48,5 +48,26 @@ class MesaJira:
         # arquivo.writelines(texto)
         # arquivo.close()
 
+        return cards
+
+    def get_dev_data(self, projeto, dev):
+        jira = self.get_jira_connection(projeto.url)
+        dev_id = dev.id_jira
+        query = 'assignee = ' + dev_id + ' AND status in (Done,"Desenv Concluido") order by created DESC'
+        cards = jira.search_issues(query, maxResults=500)
 
         return cards
+
+    def debugIssue(self, projeto):
+        jira = self.get_jira_connection(projeto.url)
+
+        ts = jira.issue('TS-1560')
+        print(ts.fields.customfield_10083)
+        # arquivo = open('issue.txt', 'w+')
+        # texto = arquivo.readlines()
+        # for k in ts.__dict__:
+        #     print("Name: {} |Value: {}".format(k, ts.__dict__[k]))
+        #     if ts.__dict__[k]:
+        #         texto.append("\nName: {} |Value: {}".format(k, ts.__dict__[k]))
+        # arquivo.writelines(texto)
+        # arquivo.close()

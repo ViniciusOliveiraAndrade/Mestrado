@@ -136,7 +136,7 @@ class Recommender:
             for experiencia in issue.experiencia_set.all():
                     if experiencia.exp in devs_e_experiencia[key]:
                         dev["qt"] += 1
-            if dev["qt"]>0:
+            if dev["qt"] > 0:
                 devs_recomendados.append(dev)
 
         devs_recomendados = sorted(devs_recomendados, key=lambda d: d['qt'], reverse=True)

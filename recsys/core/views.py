@@ -18,11 +18,7 @@ from nltk import RSLPStemmer
 def projetos(request):
     projects = MProject.objects.all()
     args = {'projects': projects}
-    tesxt = limpar_texto("sdsd sokdoasd, soadosakd ,sodaksosdaod ,sadl !  sldlsodl texto Neste momento tem apenas 203 "
-                 "palavras, o que me parece muito pouco. Há uma lista destas palavras no github. Para testar a "
-                 "https://realpython.com/python-string-contains-substring/ hub segredo https://www.figma.com/"
-                 "pontuação, https://stackoverflow.com/questions/11331982/how-to-remove-any-url-within-a-string-in-pythonpode ser usado o código seguinte: https://www.figma.com/ ")
-    print(tesxt)
+
     return render(request, 'core/listar_projetos.html', args)
 
 
@@ -36,6 +32,7 @@ def detalhar_projeto(request, projeto_id):
         print("Deu erro pegando alocacao")
 
     mesa_jira = MesaJira()
+    mesa_jira.debugIssue(projeto)
     squads = {}
 
     try:
@@ -302,11 +299,13 @@ def alocar_dev(request, projeto_id):
                 dev = get_object_or_404(MDev, pk=dev_selecionado)
                 alocar = AlocacaoP(projeto=projeto, dev=dev, squad=None)
                 alocar.save()
+                update_dev_data(projeto, dev)
 
             for dev_selecionado in devs_recomendados:
                 dev = get_object_or_404(MDev, pk=dev_selecionado)
                 alocar = AlocacaoP(projeto=projeto, dev=dev, squad=None)
                 alocar.save()
+                update_dev_data(projeto, dev)
 
             return redirect('core:listar_alocacao', projeto_id=projeto.id)
 
@@ -355,7 +354,66 @@ def recomendacao(request, projeto_id):
 # Funcoes
 # NLTK C:\Users\vinic\AppData\Roaming\nltk_data
 def cadastrar_issue(jiraIssue):
-    pass
+    print("\n\n")
+    try:
+        print(jiraIssue.key)
+        return get_object_or_404(JiraIssues, key=jiraIssue.key)
+
+    except Exception:
+        try:
+            print(jiraIssue.key)
+            key = jiraIssue.key
+            if not key:
+                key = "No Key"
+        except Exception:
+            key = "No Key"
+            print("Key Problem")
+
+        try:
+            print(jiraIssue.fields.summary)
+            title = jiraIssue.fields.summary
+            if not title:
+                title = "No Title"
+        except Exception:
+            title = "No Title"
+            print("Title Problem")
+
+        try:
+            print(jiraIssue.fields.description)
+            if jiraIssue.fields.description:
+                descricao_limpa = " ".join(limpar_texto(jiraIssue.fields.description))
+                description = descricao_limpa
+            elif jiraIssue.fields.customfield_10083:
+                descricao_limpa = " ".join(limpar_texto(jiraIssue.fields.customfield_10083))
+                description = descricao_limpa
+            else:
+                description = "No Description"
+
+        except Exception:
+            description = "No Description"
+            print("Description Problem")
+
+        try:
+            print(jiraIssue.fields.customfield_10029)
+            feature = jiraIssue.fields.customfield_10029
+            if not feature:
+                feature = "No Feature"
+        except Exception:
+            feature = "No Feature"
+            print("Feature Problem")
+
+        try:
+            print(jiraIssue.fields.customfield_10026)
+            storyPoint = jiraIssue.fields.customfield_10026
+            if not storyPoint:
+                storyPoint = 0
+        except Exception:
+            storyPoint = 0
+            print("Story Point Problem")
+
+        issue = JiraIssues(key=key, title=title, description=description, feature=feature, storyPoint=storyPoint, dev=None)
+        issue.save()
+        return issue
 
 
 def limpar_texto(texto):
@@ -455,3 +513,13 @@ def limpar_texto(texto):
     # print(lista_de_acentos)
     # print(len(acentos))
     # print(len(lista_de_acentos))
+
+
+def update_dev_data(projeto, dev):
+    mesa_jira = MesaJira()
+    issues_dev = mesa_jira.get_dev_data(projeto, dev)
+
+    for issue in issues_dev:
+        issue_cadastrada = cadastrar_issue(issue)
+        issue_cadastrada.dev = dev
+        issue_cadastrada.save()

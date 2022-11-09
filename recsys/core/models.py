@@ -55,7 +55,7 @@ class JiraIssues(models.Model):
     description = models.TextField(blank=False)
     feature = models.CharField(max_length=100)
     title = models.CharField(max_length=250)
-    dev = models.ForeignKey(MDev, on_delete=models.CASCADE,default=None)
+    dev = models.ForeignKey(MDev, on_delete=models.CASCADE, default=None, blank=True, null=True)
     termos = models.ManyToManyField(Termo)
 
 
