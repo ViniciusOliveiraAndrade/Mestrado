@@ -56,7 +56,8 @@ class JiraIssues(models.Model):
     feature = models.CharField(max_length=100)
     title = models.CharField(max_length=250)
     dev = models.ForeignKey(MDev, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    termos = models.ManyToManyField(Termo)
+    prioridade = models.CharField(max_length=20, default="Low")
+    plataforma = models.CharField(max_length=20)
 
 
 class Recommendation(models.Model):
