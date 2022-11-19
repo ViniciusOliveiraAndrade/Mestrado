@@ -1,6 +1,7 @@
 {% extends 'core/layout/base.html'%}
 {% block titulo %}Project - {{projeto.name}}{% endblock %}
 {% block main %}
+{% load core_tags %}
 <h1 class="mt-4">Project detail</h1>
 <!--<ol class="breadcrumb mb-4">-->
 <!--    <li class="breadcrumb-item active">Todos os projetos</li>-->
@@ -151,7 +152,8 @@
                                             {% for card in cards %}
                                             <tr>
                                                 <td>{{ card.key}} - {{card.fields.summary}}</td>
-                                                <td>{{card.fields.assignee }}</td>
+<!--                                                <td>{{card.fields.assignee }}</td>-->
+                                                <td>{{ recomendacoes|get_dic_value:squad.nome|get_first_dic_value:card.key }}</td>
                                                 <td>
                                                     <a href="{{projeto.url}}/browse/{{card.key}}"  target="_blank">
                                                         <i class="fas fa-eye me-1"></i>

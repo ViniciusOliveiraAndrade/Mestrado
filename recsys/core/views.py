@@ -4,6 +4,7 @@ from .models import *
 from .Recommender import Recommender
 from .MJira import MesaJira
 
+
 # Create your views here.
 
 # ...
@@ -43,17 +44,17 @@ def detalhar_projeto(request, projeto_id):
             # Pegar as recomendação das squads
             try:
                 recomendador = Recommender()
-                cards = squads[squad.nome] # Pegas os cards da sprint atual
+                cards = squads[squad.nome]  # Pegas os cards da sprint atual
 
-                alocacoes_squad = projeto.alocacaop_set.filter(squad__nome=squad.nome) # pegas as alocacoes da squad
+                alocacoes_squad = projeto.alocacaop_set.filter(squad__nome=squad.nome)  # pegas as alocacoes da squad
                 devs_alocados_squad = []
 
                 # Pegas os devs da squad
                 for alocacao in alocacoes_squad:
                     devs_alocados_squad.append(alocacao.dev)
                 recomendacoes_squad[squad.nome] = recomendador.recomendar_dev_para_JiraIssue(
-                            cards,
-                            devs_alocados_squad)
+                    cards,
+                    devs_alocados_squad)
 
 
             except Exception:
@@ -64,7 +65,6 @@ def detalhar_projeto(request, projeto_id):
 
     except Exception:
         print("Deu erro pegando os dados da squad")
-
 
     return render(request, "core/detalhe_projeto.html", args)
 
@@ -557,3 +557,6 @@ def update_dev_data(projeto, dev):
         issue_cadastrada = mesa_jira.cadastrar_issue(issue)
         issue_cadastrada.dev = dev
         issue_cadastrada.save()
+
+
+
