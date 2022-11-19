@@ -34,28 +34,6 @@ class MesaJira:
             print("Sprint com ID {} não existe ou você não tem permissão de visualização.".format(sprint))
             cards = []
 
-        # debug dos cards
-        # for card in cards:
-        #     print(card)
-
-        # debug dos issue
-        # ts = jira.issue('TS-658')
-        # for key in ts.__dict__:
-        #     # print("Name: {} |Value: {}".format(key, ts.__dict__[key]))
-        #     print(ts.key)
-        #     # print(ts.)
-
-        # debug dos issue fields
-        # ts = jira.issue('TS-658')
-        # arquivo = open('issue fields.txt', 'w+')
-        # texto = arquivo.readlines()
-        # for k in ts.fields.__dict__:
-        #     print("Name: {} |Value: {}".format(k, ts.fields.__dict__[k]))
-        #     if ts.fields.__dict__[k]:
-        #         texto.append("\nName: {} |Value: {}".format(k, ts.fields.__dict__[k]))
-        # arquivo.writelines(texto)
-        # arquivo.close()
-
         return cards
 
     def get_dev_data(self, projeto, dev):

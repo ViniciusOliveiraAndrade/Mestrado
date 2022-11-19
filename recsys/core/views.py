@@ -29,25 +29,42 @@ def detalhar_projeto(request, projeto_id):
     mesa_jira = MesaJira()
     # mesa_jira.debugIssue(projeto)
 
+    #
+    # Pegar as squads
     squads = {}
+    recomendacoes_squad = {}
 
     try:
 
         for squad in projeto.squad_set.all():
             squads[squad.nome] = mesa_jira.get_squad_data(projeto, squad)
+
+            #
+            # Pegar as recomendação das squads
+            try:
+                recomendador = Recommender()
+                cards = squads[squad.nome] # Pegas os cards da sprint atual
+
+                alocacoes_squad = projeto.alocacaop_set.filter(squad__nome=squad.nome) # pegas as alocacoes da squad
+                devs_alocados_squad = []
+
+                # Pegas os devs da squad
+                for alocacao in alocacoes_squad:
+                    devs_alocados_squad.append(alocacao.dev)
+                recomendacoes_squad[squad.nome] = recomendador.recomendar_dev_para_JiraIssue(
+                            cards,
+                            devs_alocados_squad)
+
+
+            except Exception:
+                print("Deu erro pegando as recomendações da squad {}".format(squad.nome))
+
         args["squads"] = squads
+        args["recomendacoes"] = recomendacoes_squad
+
     except Exception:
         print("Deu erro pegando os dados da squad")
 
-
-
-    # print(projeto.squad_set.first().sprint)
-    cards = mesa_jira.get_squad_data(projeto, projeto.squad_set.all()[1])
-    recomendador = Recommender()
-    devs = []
-    for alocacao in projeto.alocacaop_set.all():
-       devs.append(alocacao.dev)
-    recomendador.recomendar_dev_para_JiraIssue(cards, devs)
 
     return render(request, "core/detalhe_projeto.html", args)
 
