@@ -84,6 +84,7 @@ class Recommender:
             sim_score = sorted(sim_score, key=lambda x: x[1], reverse=True)
             sim_score = sim_score[1:11]
             sim_index = [i[0] for i in sim_score]
+            # print(sim_index)
             return tabela['key'].iloc[sim_index].tolist()
 
 
@@ -91,7 +92,10 @@ class Recommender:
         # filtrando as issuas semelhantes
         for i in issues_cadastradas:
             issues_semelhantes_recomendadas = get_recomendation(i.key, tabela)
-            issues_semelhantes = JiraIssues.objects.filter(key__in=issues_semelhantes_recomendadas)
+            # issues_semelhantes = JiraIssues.objects.filter(key__in=issues_semelhantes_recomendadas)
+            issues_semelhantes = []
+            for j in issues_semelhantes_recomendadas:
+                issues_semelhantes.append(get_object_or_404(JiraIssues, key=j))
             issues_recomendadas[i.key] = []
             for semelhante in issues_semelhantes:
                 if semelhante.plataforma == i.plataforma:
