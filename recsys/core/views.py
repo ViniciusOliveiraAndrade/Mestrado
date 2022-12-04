@@ -74,7 +74,7 @@ def cadastrar_projeto(request):
         try:
             nome = request.POST['nome']
             url = request.POST['url']
-            status = True if request.POST['status'] == "on" else False
+            status = True if request.POST.get('status', "off") == "on" else False
             experiencias = request.POST['experiencias']
 
             projeto = MProject(name=nome, url=url, status=status)
@@ -117,7 +117,9 @@ def editar_projeto(request, projeto_id):
         try:
             nome = request.POST['nome']
             url = request.POST['url']
-            status = True if request.POST['status'] == "on" else False
+
+            status = True if request.POST.get('status', "off") == "on" else False
+
             experiencias = request.POST['experiencias']
 
             projeto.name = nome
